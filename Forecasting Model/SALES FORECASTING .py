@@ -139,10 +139,3 @@ r2_lin = r2_score(y_test, lin_pred)
 print(f"Linear Regression RMSE: {rmse_lin:.2f}")
 print(f"Linear Regression R² Score: {r2_lin:.2f}")
 
-import joblib
-
-# Save model
-joblib.dump(model, 'random_forest_model.pkl')
-
-# To load later:
-# model = joblib.load('random_forest_model.pkl')
