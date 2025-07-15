@@ -5,12 +5,9 @@ features = pd.read_csv('features.csv')
 stores = pd.read_csv('stores.csv')
 test=pd.read_csv('test.csv')
 
-
-
 # Example: Drop columns with too many missing values
 train = train.drop(['MarkDown2', 'MarkDown5'], axis=1, errors='ignore')
 features = features.drop(['MarkDown2', 'MarkDown5'], axis=1, errors='ignore')
-
 train['Date'] = pd.to_datetime(train['Date'])
 features['Date'] = pd.to_datetime(features['Date'])
 
@@ -18,11 +15,8 @@ features['Date'] = pd.to_datetime(features['Date'])
 df = train.merge(stores, on='Store', how='left')
 df = df.merge(features, on=['Store', 'Date'], how='left')
 
-
-
 #You either fill the missing data or remove the column.
 df.fillna(0, inplace=True)
-
 df['Year']=df['Date'].dt.year
 df['Month']=df['Date'].dt.month
 df['Week']=df['Date'].dt.isocalendar().week
@@ -30,11 +24,8 @@ df['Day']=df['Date'].dt.day
 
 # This will create new columns: Type_B and Type_C (Type_A is dropped)
 df = pd.get_dummies(df, columns=['Type'], drop_first=True)
-
 df.head()
-
 df['IsHoliday_x'] = df['IsHoliday_x'].astype(int)
-
 
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -51,7 +42,6 @@ plt.figure(figsize=(8, 5))
 sns.boxplot(x='Type_B', y='Weekly_Sales', data=df)
 plt.title("Sales Distribution for Store Type B")
 plt.show()
-
 plt.figure(figsize=(12, 8))
 sns.heatmap(df.corr(), annot=True, fmt=".2f", cmap='coolwarm')
 plt.title("Feature Correlation Heatmap")
@@ -72,19 +62,15 @@ X_train, X_test, y_train, y_test=train_test_split(
 from sklearn.ensemble import RandomForestRegressor
 model=RandomForestRegressor(n_estimators=100, random_state=42)
 model.fit(X_train,y_train)
-
 y_pred=model.predict(X_test)
 
 from sklearn.metrics import mean_squared_error
-
 rmse = mean_squared_error(y_test, y_pred) ** 0.5  # Take the square root manually
 print(f"rmse:{rmse:.2f}")
 
 
 from sklearn.metrics import r2_score
-
 r2 = r2_score(y_test, y_pred)
-
 print(f"R² Score: {r2:.2f}")
 
 import matplotlib.pyplot as plt
@@ -97,7 +83,6 @@ plt.xlabel("Actual Sales")
 plt.ylabel("Predicted Sales")
 plt.title("Actual vs Predicted Weekly Sales")
 plt.show()
-
 
 importances = model.feature_importances_
 feature_names = X.columns
@@ -132,10 +117,8 @@ lin_pred = lin_model.predict(X_test)
 
 # Step 4: Evaluate
 from sklearn.metrics import mean_squared_error, r2_score
-
 rmse_lin = mean_squared_error(y_test, lin_pred)**0.5
 r2_lin = r2_score(y_test, lin_pred)
-
 print(f"Linear Regression RMSE: {rmse_lin:.2f}")
 print(f"Linear Regression R² Score: {r2_lin:.2f}")
 
